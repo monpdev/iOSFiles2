@@ -28,6 +28,12 @@ struct CustomCarousel<Content: View>: View {
                             lastItem
                                 .frame(width: size.width, height: size.height)
                                 .id(-1)
+                                .onChange(of: isScrolling) {oldValue,newValue in
+                                    if !newValue && scrollPosition == -1 {
+                                        scrollPosition = collection.count - 1
+                                        
+                                    }
+                                }
                         }
                         
                         ForEach(collection.indices, id:\.self) {index in
@@ -48,6 +54,9 @@ struct CustomCarousel<Content: View>: View {
             .scrollPosition(id: $scrollPosition)
             .scrollTargetBehavior(.paging)
             .scrollIndicators(.hidden)
+            .onScrollPhaseChange {oldPhase, newPhase in
+                isScrolling = newPhase.isScrolling
+            }
             .onAppear { scrollPosition = 0}
         }
     }
@@ -56,3 +65,4 @@ struct CustomCarousel<Content: View>: View {
 #Preview {
     ContentView()
 }
+
