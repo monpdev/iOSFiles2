@@ -13,10 +13,10 @@ struct CustomCarousel<Content: View>: View {
     
     @Binding var activeIndex: Int
     @ViewBuilder var content: Content
-    
     ///View Properties
-    
     @State private var scrollPosition: Int?
+    @State private var offsetBasedPosition: Int = 0
+    @State private var isSettled: Bool = false
     @State private var isScrolling: Bool = false
     @GestureState private var isHoldingScreen: Bool = false
     @State private var timer = Timer.publish(every: autoScrollDuration, on: .main, in: .default).autoconnect()
@@ -34,13 +34,11 @@ struct CustomCarousel<Content: View>: View {
                                 .id(-1)
                         }
                         
-                        
                         ForEach(collection.indices, id:\.self) {index in
                             collection[index]
                                 .frame(width: size.width, height: size.height)
                                 .id(index)
                         }
-                        
                         if let firstItem = collection.first{
                             firstItem
                                 .frame(width: size.width, height: size.height)
@@ -59,18 +57,21 @@ struct CustomCarousel<Content: View>: View {
                         scrollPosition = collection.count - 1
                     }
                     
-                    if !isScrolling && scrollPosition == -1 {
-                        scrollPosition = collection.count - 1
+                    if !isScrolling && scrollPosition == collection.count && !isHoldingScreen{
+                        scrollPosition = 0
                     }
                 }
                 .simultaneousGesture(DragGesture(minimumDistance: 0).updating($isHoldingScreen,
-                                                                              body: {_, out, _ in
+                    body: {_, out, _ in
                     out = true
                 }))
                 .onChange(of: isHoldingScreen, {oldValue, newValue in
                     if newValue {
                         timer.upstream.connect().cancel()
                     } else {
+                        if isSettled && scrollPosition != offsetBasedPosition {
+                            scrollPosition = offsetBasedPosition
+                        }
                         timer = Timer.publish(every: Self.autoScrollDuration, on: .main, in:.default).autoconnect()
                     }
                 })
@@ -86,21 +87,41 @@ struct CustomCarousel<Content: View>: View {
                 }
                 .onChange(of: scrollPosition) {oldValue, newValue in
                     if let newValue {
-                        activeIndex = max(min(newValue, collection.count - 1),0)
+                        if newValue == -1 {
+                            activeIndex = collection.count - 1
+                        } else if newValue == collection.count {
+                            activeIndex = 0
+                        } else {
+                            activeIndex = max(min(newValue, collection.count - 1),0)
+                        }
+                    }
+                }
+                
+                .onScrollGeometryChange(for: CGFloat.self) {
+                    $0.contentOffset.x
+                } action: {oldValue, newValue in
+                    isSettled = size.width > 0 ? (Int(newValue) % Int(size.width) == 0) : false
+                    let index = size.width > 0 ? Int((newValue / size.width).rounded()-1) : 0
+                    offsetBasedPosition = index
+                    
+                    if isSettled && (scrollPosition != index || index == collection.count) && !isScrolling && !isHoldingScreen {
+                        scrollPosition = index == collection.count ? 0 : index
                     }
                 }
             }
-            
             .onAppear { scrollPosition = 0}
         }
     }
     
-    
     static var autoScrollDuration: CGFloat {
-        return 1.8
+        return 1
     }
 }
 
 #Preview {
     ContentView()
 }
+
+
+
+
