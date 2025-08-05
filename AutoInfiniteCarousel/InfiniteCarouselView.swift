@@ -7,11 +7,29 @@
 import SwiftUI
 
 struct InfiniteCarouselView: View {
+    
+    @State private var scrollPosition = ScrollPosition()
+    
+    private let itemSpacing: CGFloat = 8
+    
     var body: some View {
-        ForEach(1...7, id: \.self) {i in
-            CarouselCard(imageName: String(i))
+        ScrollView (.horizontal, showsIndicators: false) {
+            HStack (spacing: itemSpacing){
+                ForEach(1...25, id: \.self) {i in
+                    Button {
+                        withAnimation(.spring(.snappy)) {
+                            scrollPosition.scrollTo(id: i)
+                        }
+                    } label: {
+                    CarouselCard(imageName: String(i))
+                        .id(i)
+                    }
+                }
+            }
+            .safeAreaPadding(.horizontal)
         }
-       
+        .scrollClipDisabled()
+        .scrollPosition($scrollPosition, anchor: .center)
     }
 }
 
@@ -34,4 +52,6 @@ struct CarouselCard: View {
 #Preview {
     InfiniteCarouselView()
 }
+
+
 
