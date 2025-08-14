@@ -20,6 +20,7 @@ struct CardView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding()
                 .padding(.top, 10)
+                .matchedGeometryEffect(id: "Date-\(card.id)", in: animation)
             
             HStack {
                 Text(card.title)
@@ -28,6 +29,7 @@ struct CardView: View {
                     .foregroundColor(.white)
                     .frame(width:250, alignment: .leading)
                     .padding()
+                    .matchedGeometryEffect(id: "Title-\(card.id)", in: animation)
            
                 Spacer(minLength: 0)
             }
@@ -38,17 +40,37 @@ struct CardView: View {
                 
                 Spacer(minLength: 0)
                 
-                Text("Read More")
-                
-                     Image(systemName: "arrow.right")
+                if !model.showContent {
+                    Text("Read More")
+                    Image(systemName: "arrow.right")
+                    
+                }
             }
             .foregroundColor(Color.white.opacity(0.9))
             .padding(30)
            
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(card.cardColor)
-        .cornerRadius(25)
+        .background(card.cardColor
+                    .cornerRadius(25)
+                    .matchedGeometryEffect(id: "bgColor-\(card.id)", in: animation)
+        )
+        .onTapGesture {
+            withAnimation(.spring()) {
+                
+                model.selectedCard = card
+                model.showCard.toggle()
+                
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.3) {
+                    
+                    withAnimation(.easeIn) {
+                        
+                        model.showContent = true
+                    }
+                    
+                }
+            }
+        }
     }
 }
 
@@ -57,4 +79,3 @@ struct CardView: View {
 }
 
 
-//13.41
