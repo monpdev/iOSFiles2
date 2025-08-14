@@ -21,8 +21,23 @@ class CarouselViewModel: ObservableObject {
         ]
     
         @Published var swipedCard = 0
+    
+    //Detail Content
+    
+    @Published var showCard = false
+    @Published var selectedCard = Card(cardColor: .clear, title: "")
+    
+    @Published var showContent = false
+    
+    var content = "A fun way to get fit– the adventure and buzz you get from coasting down hills and being outdoors means you are more likely to continue to cycle regularly, compared to other physical activities that keep you indoors or require special times or places."
+
         
 }
+
+
+
+
+
 
 
 
