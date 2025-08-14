@@ -97,9 +97,3 @@ struct DetailView: View {
 }
 
 
-
-
-
-
-
-
