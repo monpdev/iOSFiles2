@@ -11,6 +11,9 @@ struct ExpandablevView: View {
     @Namespace private var namespace
     @State private var show = false
     
+    var thumbnail: ThumbnailView
+    var expanded: ExpandedView
+    
     var body: some View {
         ZStack {
             if !show {
@@ -32,6 +35,10 @@ struct ExpandablevView: View {
     
     @ViewBuilder
     private func thumbnailView() -> some View {
+        ZStack {
+            
+            
+        }
         
     }
     
@@ -47,5 +54,3 @@ struct ExpandablevView: View {
 #Preview {
     ExpandablevView()
 }
-
-
