@@ -1,13 +1,20 @@
 //
-//  ExpandablevView.swift
+//  ExpandableView.swift
 //  ExpandView
 //
 //  Created by Mon P. on 25/08/2025.
 //
 
+//
+//  ExpandableView.swift
+//  ExpandView
+//
+//  Created by Mon P. on 30/08/2025.
+//
+
 import SwiftUI
 
-struct ExpandablevView: View {
+struct ExpandableView: View {
     @Namespace private var namespace
     @State private var show = false
     
@@ -28,7 +35,7 @@ struct ExpandablevView: View {
                     show.toggle()
                     
                 }
-                
+          
             }
         }
     }
@@ -36,21 +43,46 @@ struct ExpandablevView: View {
     @ViewBuilder
     private func thumbnailView() -> some View {
         ZStack {
+            thumbnail
+                .matchedGeometryEffect(id: "view", in: namespace)
+        }
+        .background(
+            Color.gray
+                .matchedGeometryEffect(id: "background", in: namespace)
             
-            
+        )
+        .mask {
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .matchedGeometryEffect(id: "mask", in: namespace)
         }
         
     }
     
     @ViewBuilder
     private func expandedView() -> some View {
-        
-        
+        ZStack {
+            expanded
+                .matchedGeometryEffect(id: "view", in: namespace)
+                .background(
+                    Color.gray
+                        .matchedGeometryEffect(id: "background", in: namespace)
+            )
+                .mask {
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .matchedGeometryEffect(id: "mask", in: namespace)
+                }
+                
+            Button (action: {
+                
+            }, label: {
+                Image(systemName: "xmark")
+                    .foregroundStyle(.white)
+            })
+            .padding()
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+            .matchedGeometryEffect(id: "mask", in: namespace)
+        }
     }
-    
-    
 }
 
-#Preview {
-    ExpandablevView()
-}
+
