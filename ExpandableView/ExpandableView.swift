@@ -2,13 +2,6 @@
 //  ExpandableView.swift
 //  ExpandView
 //
-//  Created by Mon P. on 25/08/2025.
-//
-
-//
-//  ExpandableView.swift
-//  ExpandView
-//
 //  Created by Mon P. on 30/08/2025.
 //
 
@@ -35,7 +28,6 @@ struct ExpandableView: View {
                     show.toggle()
                     
                 }
-          
             }
         }
     }
@@ -47,7 +39,7 @@ struct ExpandableView: View {
                 .matchedGeometryEffect(id: "view", in: namespace)
         }
         .background(
-            Color.gray
+            Color.gray.opacity(0.7)
                 .matchedGeometryEffect(id: "background", in: namespace)
             
         )
@@ -73,6 +65,9 @@ struct ExpandableView: View {
                 }
                 
             Button (action: {
+                withAnimation(.spring(response: 0.6, dampingFraction: 0.8)){
+                    show.toggle()
+                }
                 
             }, label: {
                 Image(systemName: "xmark")
@@ -84,5 +79,10 @@ struct ExpandableView: View {
         }
     }
 }
+
+
+
+
+
 
 
