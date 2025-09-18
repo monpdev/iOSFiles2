@@ -1,4 +1,4 @@
-//
+////
 //  ContentView.swift
 //  dropDownMenu
 //
@@ -113,61 +113,14 @@ fileprivate struct DropdownListView: View {
                 .onAppear {
                     
                 }
+    
         
-        //7:48/19:55
-                            
-                            
-                            
+    
                             
                         }
                 
             
                 
             
-            //7:22/19.55
-            
-            
-        
-        
-        
-        
-        
-        
-        
-        
-        
-            
-            
-            
-        }
-        
-        
-        
-        
-    }
-    
-   
-}
-
-
-
-
-
-
-
-
-//struct ContentView: View {
-//    var body: some View {
-//        VStack {
-//            Image(systemName: "globe")
-//                .imageScale(.large)
-//                .foregroundStyle(.tint)
-//            Text("Hello, world!")
-//        }
-//        .padding()
-//    }
-//}
-//
-//#Preview {
-//    ContentView()
+          //continue with the drop down menu
 //}
