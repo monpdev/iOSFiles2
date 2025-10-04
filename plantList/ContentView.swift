@@ -9,9 +9,15 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        List(plants) { plant in
-        
-          plantRow(plant: plant)
+        NavigationView {
+            HStack {
+                List(plants) { plant in
+                    NavigationLink(destination:
+                                    DetailView(plant: plant)) {
+                        plantRow(plant: plant)
+                    }
+                }.navigationTitle("Flowers and Plants")
+            }
         }
     }
 }
@@ -51,4 +57,5 @@ struct  plantRow : View {
 
 
 
-//now at 6:36/27:27
+
+
